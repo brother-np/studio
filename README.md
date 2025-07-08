@@ -49,20 +49,21 @@ To get a local copy up and running, follow these simple steps.
 
 ### Running the Application
 
-This project requires two separate development servers to run concurrently in two different terminal windows.
+This project has two parts that need to run at the same time: the Next.js website and the Genkit AI services. You'll need to open two separate terminal windows or tabs to run them concurrently.
 
+**In your first terminal:**
 1. **Run the Next.js frontend:**
    ```sh
    npm run dev
    ```
-   This will start the main application on [http://localhost:9002](http://localhost:9002).
+   This will start the main application, which you can view at [http://localhost:9002](http://localhost:9002).
 
-2. **Run the Genkit AI flows:**
-   In a new terminal window, run:
+**In your second terminal:**
+1. **Run the Genkit AI flows:**
    ```sh
    npm run genkit:watch
    ```
-   This starts the Genkit development server, which provides the AI functionalities used in the app.
+   This starts the Genkit development server, which provides the AI functionalities used in the app. Keep this terminal running alongside the first one.
 
 ### Admin Access
 
