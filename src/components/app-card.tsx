@@ -37,10 +37,15 @@ export function AppCard({ app }: AppCardProps) {
           </CardDescription>
         </div>
       </CardHeader>
-      <CardContent className="flex-grow">
+      <CardContent className="flex-grow space-y-3">
         <p className="text-sm text-muted-foreground line-clamp-3">
           {app.description}
         </p>
+        <div className="flex flex-wrap gap-2">
+          {app.tags.map((tag) => (
+            <Badge key={tag} variant="outline">{tag}</Badge>
+          ))}
+        </div>
       </CardContent>
       <CardFooter>
         <DropdownMenu>
