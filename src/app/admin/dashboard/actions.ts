@@ -14,7 +14,7 @@ let apps: App[] = [...appData]; // mutable copy
 
 const AUTH_COOKIE_NAME = 'mero-app-hub-auth';
 const ADMIN_EMAIL = 'anukulkhatiwada888@gmail.com';
-const ADMIN_PASSWORD = 'password';
+const ADMIN_PASSWORD = 'Sanu@123';
 
 const AppSchema = z.object({
   id: z.string().optional(),
