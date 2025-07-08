@@ -86,7 +86,7 @@ export default function Home() {
         )}
       </main>
       <footer className="flex items-center justify-center p-4 border-t">
-        <p className="text-sm text-muted-foreground">© {new Date().getFullYear()} Mero App Hub</p>
+        <p className="text-sm text-muted-foreground">© {new Date().getFullYear()} Nepali App Hub</p>
       </footer>
     </div>
   );

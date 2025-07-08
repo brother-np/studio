@@ -151,7 +151,7 @@ export default function AppForm({ app, onSuccess }: AppFormProps) {
                 <FormItem>
                   <FormLabel>App Name</FormLabel>
                   <FormControl>
-                    <Input placeholder="e.g., Mero App" {...field} />
+                    <Input placeholder="e.g., Nepali App" {...field} />
                   </FormControl>
                   <FormMessage />
                 </FormItem>

@@ -1,5 +1,5 @@
 import Link from 'next/link';
-import { MeroAppHubIcon } from '@/components/icons';
+import { NepaliAppHubIcon } from '@/components/icons';
 import LogoutButton from '@/components/logout-button';
 import { Button } from '@/components/ui/button';
 import { Home } from 'lucide-react';
@@ -17,8 +17,8 @@ export default function AdminLayout({
             href="/admin/dashboard"
             className="flex items-center gap-2 text-lg font-semibold md:text-base"
           >
-            <MeroAppHubIcon className="h-6 w-6" />
-            <span className="font-headline">Mero App Hub Admin</span>
+            <NepaliAppHubIcon className="h-6 w-6" />
+            <span className="font-headline">Nepali App Hub Admin</span>
           </Link>
         </nav>
         <div className="flex w-full items-center gap-4 md:ml-auto md:gap-2 lg:gap-4">

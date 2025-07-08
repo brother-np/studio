@@ -12,7 +12,7 @@ import { suggestAppTags } from '@/ai/flows/suggest-app-tags';
 
 let apps: App[] = [...appData]; // mutable copy
 
-const AUTH_COOKIE_NAME = 'mero-app-hub-auth';
+const AUTH_COOKIE_NAME = 'nepali-app-hub-auth';
 const ADMIN_EMAIL = 'anukulkhatiwada888@gmail.com';
 const ADMIN_PASSWORD = 'Sanu@123';
 

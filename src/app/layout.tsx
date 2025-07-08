@@ -4,7 +4,7 @@ import { cn } from '@/lib/utils';
 import './globals.css';
 
 export const metadata: Metadata = {
-  title: 'Mero App Hub',
+  title: 'Nepali App Hub',
   description: 'A curated list of Nepali-focused Android applications.',
 };
 

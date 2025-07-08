@@ -3,7 +3,7 @@ import type { NextRequest } from 'next/server';
 
 const protectedRoutes = ['/admin/dashboard'];
 const authRoute = '/admin/login';
-const AUTH_COOKIE_NAME = 'mero-app-hub-auth';
+const AUTH_COOKIE_NAME = 'nepali-app-hub-auth';
 
 export function middleware(request: NextRequest) {
   const { pathname } = request.nextUrl;
