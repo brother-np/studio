@@ -1,6 +1,6 @@
 'use client';
 
-import { useState, useMemo } from 'react';
+import { useState, useMemo, useEffect } from 'react';
 import type { App } from '@/lib/types';
 import { apps as initialApps, categories } from '@/lib/data';
 import { AppCard } from '@/components/app-card';
@@ -14,11 +14,26 @@ import {
   SelectValue,
 } from '@/components/ui/select';
 import { Search } from 'lucide-react';
+import { generateWebsiteDescription } from '@/ai/flows/generate-website-description';
 
 export default function Home() {
   const [apps, setApps] = useState<App[]>(initialApps);
   const [searchTerm, setSearchTerm] = useState('');
   const [selectedCategory, setSelectedCategory] = useState('All');
+  const [description, setDescription] = useState('Loading description...');
+
+  useEffect(() => {
+    async function fetchDescription() {
+      try {
+        const result = await generateWebsiteDescription({});
+        setDescription(result.description);
+      } catch (error) {
+        console.error('Failed to generate website description:', error);
+        setDescription('Explore a curated collection of apps made for Nepal and by Nepalis.');
+      }
+    }
+    fetchDescription();
+  }, []);
 
   const filteredApps = useMemo(() => {
     return apps.filter(app => {
@@ -40,7 +55,7 @@ export default function Home() {
             Discover Nepali Apps
           </h1>
           <p className="mx-auto max-w-[600px] text-muted-foreground md:text-xl">
-            Explore a curated collection of apps made for Nepal and by Nepalis.
+            {description}
           </p>
         </div>
 
