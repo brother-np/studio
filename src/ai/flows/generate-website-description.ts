@@ -27,7 +27,7 @@ const prompt = ai.definePrompt({
   name: 'generateWebsiteDescriptionPrompt',
   input: {schema: GenerateWebsiteDescriptionInputSchema},
   output: {schema: GenerateWebsiteDescriptionOutputSchema},
-  prompt: `You are a creative marketing copywriter. Your task is to write a compelling and concise description for a website called "NepaliAppHub".
+  prompt: `You are a creative marketing copywriter. Your task is to write a compelling and concise description for a website called "NepaliAppHub". The description should be a single, engaging paragraph, around 2-3 sentences long.
 
 Here are the key details about the website:
 - **Name:** NepaliAppHub
@@ -41,7 +41,7 @@ Here are the key details about the website:
     - It has a clean, modern design with a red, white, and blue color scheme, inspired by the Nepali flag.
 - **Target Audience:** Anyone interested in finding or promoting Nepali-centric applications.
 
-Please generate a single, engaging paragraph that can be used on the website's homepage to welcome visitors and explain what the site is about. The tone should be professional, welcoming, and highlight the value of discovering community-focused apps.
+Please generate a single, engaging paragraph that can be used on the website's homepage to welcome visitors and explain what the site is about. The tone should be professional, welcoming, and highlight the value of discovering community-focused apps. Keep it brief and impactful.
   `,
 });
 
