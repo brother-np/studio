@@ -6,7 +6,7 @@ import { settings } from '@/lib/data';
 import './globals.css';
 
 export const metadata: Metadata = {
-  title: 'Nepali App Hub',
+  title: 'NepaliAppHub',
   description: 'A curated list of Nepali-focused Android applications.',
 };
 

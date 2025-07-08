@@ -10,7 +10,7 @@ export default function Header() {
         <Link href="/" className="mr-6 flex items-center space-x-2">
           <NepaliAppHubIcon className="h-6 w-6" />
           <span className="font-bold font-headline sm:inline-block">
-            Nepali App Hub
+            <span className="text-primary">Nepali</span><span className="text-accent">AppHub</span>
           </span>
         </Link>
         <div className="flex flex-1 items-center justify-end">

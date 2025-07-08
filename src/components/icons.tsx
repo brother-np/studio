@@ -9,26 +9,19 @@ export function NepaliAppHubIcon(props: SVGProps<SVGSVGElement>) {
       height="24"
       {...props}
     >
-      <title>Nepali App Hub Logo</title>
-      <path
-        fillRule="evenodd"
-        clipRule="evenodd"
-        d="M12.262 0C5.49 0 0 5.49 0 12.262v39.476C0 58.51 5.49 64 12.262 64h39.476C58.51 64 64 58.51 64 51.738V12.262C64 5.49 58.51 0 51.738 0H12.262z"
-        fill="#C02C38"
-      />
-      <path
-        fillRule="evenodd"
-        clipRule="evenodd"
-        d="M0 45.926L16.203 33.32l9.655 12.07L44.29 24l19.71 13.14V51.74C64 58.51 58.51 64 51.738 64H12.262C5.49 64 0 58.51 0 51.74V45.926z"
-        fill="#00338D"
-      />
-      <path
-        d="M32 12.8v17.385m-6.4-10.985L32 25.6l6.4-6.4"
-        stroke="#fff"
-        strokeWidth="4"
-        strokeLinecap="round"
-        strokeLinejoin="round"
-      />
+      <title>Nepali App Hub Icon</title>
+      <g>
+        <rect width="64" height="64" rx="12" fill="hsl(var(--primary))" />
+        <path d="M0 64 L0 50 L32 30 L64 50 L64 64 Z" fill="hsl(var(--accent))" />
+        <path d="M32 30 L26 39 L38 39 Z" fill="#FFF" />
+        <path
+          d="M32 12 V 32 M22 24 L32 32 L42 24"
+          stroke="#FFF"
+          strokeWidth="6"
+          strokeLinecap="round"
+          strokeLinejoin="round"
+        />
+      </g>
     </svg>
   );
 }

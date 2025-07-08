@@ -18,7 +18,9 @@ export default function AdminLayout({
             className="flex items-center gap-2 text-lg font-semibold md:text-base"
           >
             <NepaliAppHubIcon className="h-6 w-6" />
-            <span className="font-headline">Nepali App Hub Admin</span>
+            <span className="font-headline">
+              <span className="text-primary">Nepali</span><span className="text-accent">AppHub</span> Admin
+            </span>
           </Link>
         </nav>
         <div className="flex w-full items-center gap-4 md:ml-auto md:gap-2 lg:gap-4">
