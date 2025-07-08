@@ -6,8 +6,8 @@ import { redirect } from 'next/navigation';
 import { revalidatePath } from 'next/cache';
 
 // In-memory store to simulate a database.
-import { apps as appData, categories } from '@/lib/data';
-import type { App } from '@/lib/types';
+import { apps as appData, categories, settings } from '@/lib/data';
+import type { App, AppSettings } from '@/lib/types';
 import { suggestAppTags } from '@/ai/flows/suggest-app-tags';
 
 let apps: App[] = [...appData]; // mutable copy
@@ -25,6 +25,15 @@ const AppSchema = z.object({
   category: z.string().min(1, 'Category is required'),
   tags: z.string().min(1, 'At least one tag is required'),
 });
+
+const SettingsSchema = z.object({
+  adsensePublisherId: z.string()
+    .refine((val) => val === '' || /^ca-pub-\d{16}$/.test(val), {
+      message: 'Invalid ID. Must be in ca-pub-XXXXXXXXXXXXXXXX format or empty.',
+    })
+    .optional(),
+});
+
 
 // --- Auth Actions ---
 
@@ -130,6 +139,31 @@ export async function suggestTagsAction(description: string) {
     return { error: 'Failed to suggest tags.' };
   }
 }
+
+// --- Settings Actions ---
+
+export async function getSettings(): Promise<AppSettings> {
+  return Promise.resolve(settings);
+}
+
+export async function updateSettings(formData: FormData) {
+  const data = Object.fromEntries(formData.entries());
+  const validatedFields = SettingsSchema.safeParse(data);
+
+  if (!validatedFields.success) {
+    return {
+      error: validatedFields.error.flatten().fieldErrors.adsensePublisherId?.[0] || 'Invalid data.',
+    };
+  }
+  
+  settings.adsensePublisherId = validatedFields.data.adsensePublisherId || '';
+  
+  revalidatePath('/admin/dashboard');
+  revalidatePath('/');
+
+  return { success: true };
+}
+
 
 // --- Other Data Actions ---
 export async function getCategories(): Promise<string[]> {

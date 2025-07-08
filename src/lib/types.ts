@@ -7,3 +7,7 @@ export type App = {
   category: string;
   tags: string[];
 };
+
+export type AppSettings = {
+  adsensePublisherId: string;
+};

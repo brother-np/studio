@@ -1,7 +1,7 @@
 'use client';
 
 import { useState } from 'react';
-import type { App } from '@/lib/types';
+import type { App, AppSettings } from '@/lib/types';
 import {
   Table,
   TableBody,
@@ -30,17 +30,19 @@ import {
   AlertDialogTrigger,
 } from '@/components/ui/alert-dialog';
 import { Badge } from '@/components/ui/badge';
-import { Edit, PlusCircle, Trash2 } from 'lucide-react';
+import { Edit, PlusCircle, Settings, Trash2 } from 'lucide-react';
 import AppForm from './app-form';
+import SettingsDialog from './settings-dialog';
 import { deleteApp } from './actions';
 import { useToast } from '@/hooks/use-toast';
 import Image from 'next/image';
 
 interface AppTableProps {
   initialApps: App[];
+  initialSettings: AppSettings;
 }
 
-export default function AppTable({ initialApps }: AppTableProps) {
+export default function AppTable({ initialApps, initialSettings }: AppTableProps) {
   const [apps, setApps] = useState(initialApps);
   const [isFormOpen, setIsFormOpen] = useState(false);
   const [editingApp, setEditingApp] = useState<App | null>(null);
@@ -85,7 +87,8 @@ export default function AppTable({ initialApps }: AppTableProps) {
 
   return (
     <>
-      <div className="flex justify-end mb-4">
+      <div className="flex justify-end gap-2 mb-4">
+        <SettingsDialog initialSettings={initialSettings} />
         <Dialog open={isFormOpen} onOpenChange={setIsFormOpen}>
           <DialogTrigger asChild>
             <Button onClick={openAddForm}>

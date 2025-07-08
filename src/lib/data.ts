@@ -1,4 +1,4 @@
-import type { App } from './types';
+import type { App, AppSettings } from './types';
 
 export const categories = [
   'Finance',
@@ -83,3 +83,9 @@ export const apps: App[] = [
     tags: ['shopping', 'deals', 'online'],
   },
 ];
+
+// In-memory store for site settings.
+// In a real app, this would be in a database.
+export let settings: AppSettings = {
+  adsensePublisherId: '',
+};
