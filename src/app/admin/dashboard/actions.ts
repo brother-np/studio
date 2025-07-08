@@ -21,9 +21,13 @@ const AppSchema = z.object({
   name: z.string().min(1, 'Name is required'),
   description: z.string().min(1, 'Description is required'),
   icon: z.string().url('Must be a valid URL'),
-  downloadLink: z.string().url('Must be a valid URL'),
+  androidDownloadLink: z.string().url('Must be a valid URL or empty.').optional().or(z.literal('')),
+  windowsDownloadLink: z.string().url('Must be a valid URL or empty.').optional().or(z.literal('')),
   category: z.string().min(1, 'Category is required'),
   tags: z.string().min(1, 'At least one tag is required'),
+}).refine(data => data.androidDownloadLink || data.windowsDownloadLink, {
+  message: "At least one download link is required.",
+  path: ["androidDownloadLink"],
 });
 
 const SettingsSchema = z.object({
@@ -76,11 +80,15 @@ export async function addApp(formData: FormData) {
     };
   }
   
-  const { tags, ...rest } = validatedFields.data;
+  const { tags, androidDownloadLink, windowsDownloadLink, ...rest } = validatedFields.data;
 
   const newApp: App = {
     id: Date.now().toString(),
     ...rest,
+    downloadLinks: {
+      android: androidDownloadLink,
+      windows: windowsDownloadLink,
+    },
     tags: tags.split(',').map(tag => tag.trim()),
   };
 
@@ -99,7 +107,7 @@ export async function updateApp(formData: FormData) {
     };
   }
 
-  const { id, tags, ...rest } = validatedFields.data;
+  const { id, tags, androidDownloadLink, windowsDownloadLink, ...rest } = validatedFields.data;
   
   const appIndex = apps.findIndex(app => app.id === id);
   if (appIndex === -1) {
@@ -109,6 +117,10 @@ export async function updateApp(formData: FormData) {
   const updatedApp: App = {
     id,
     ...rest,
+    downloadLinks: {
+      android: androidDownloadLink,
+      windows: windowsDownloadLink,
+    },
     tags: tags.split(',').map(tag => tag.trim()),
   };
   

@@ -16,7 +16,10 @@ export const apps: App[] = [
     name: 'eSewa',
     description: 'Nepal\'s first online payment gateway.',
     icon: 'https://placehold.co/128x128.png',
-    downloadLink: '#',
+    downloadLinks: {
+      android: '#',
+      windows: '#'
+    },
     category: 'Finance',
     tags: ['payment', 'wallet', 'finance'],
   },
@@ -25,7 +28,10 @@ export const apps: App[] = [
     name: 'Daraz',
     description: 'The leading online shopping platform in Nepal.',
     icon: 'https://placehold.co/128x128.png',
-    downloadLink: '#',
+    downloadLinks: {
+      android: '#',
+      windows: '#'
+    },
     category: 'E-commerce',
     tags: ['shopping', 'online', 'store'],
   },
@@ -34,7 +40,10 @@ export const apps: App[] = [
     name: 'Hamro Patro',
     description: 'A comprehensive Nepali calendar and utility app.',
     icon: 'https://placehold.co/128x128.png',
-    downloadLink: '#',
+    downloadLinks: {
+      android: '#',
+      windows: '#'
+    },
     category: 'Utilities',
     tags: ['calendar', 'news', 'tools'],
   },
@@ -43,7 +52,10 @@ export const apps: App[] = [
     name: 'Foodmandu',
     description: 'Order food from your favorite restaurants.',
     icon: 'https://placehold.co/128x128.png',
-    downloadLink: '#',
+    downloadLinks: {
+      android: '#',
+      windows: '#'
+    },
     category: 'Food & Drink',
     tags: ['food', 'delivery', 'restaurant'],
   },
@@ -52,7 +64,10 @@ export const apps: App[] = [
     name: 'NetTV',
     description: 'Watch live TV and movies on the go.',
     icon: 'https://placehold.co/128x128.png',
-    downloadLink: '#',
+    downloadLinks: {
+      android: '#',
+      windows: '#'
+    },
     category: 'Entertainment',
     tags: ['tv', 'movies', 'streaming'],
   },
@@ -61,7 +76,10 @@ export const apps: App[] = [
     name: 'Setopati',
     description: 'Stay updated with the latest news from Nepal.',
     icon: 'https://placehold.co/128x128.png',
-    downloadLink: '#',
+    downloadLinks: {
+      android: '#',
+      windows: '#'
+    },
     category: 'News',
     tags: ['news', 'current affairs', 'journalism'],
   },
@@ -70,7 +88,10 @@ export const apps: App[] = [
     name: 'Khalti',
     description: 'A popular digital wallet and payment service.',
     icon: 'https://placehold.co/128x128.png',
-    downloadLink: '#',
+    downloadLinks: {
+      android: '#',
+      windows: '#'
+    },
     category: 'Finance',
     tags: ['wallet', 'payment', 'finance'],
   },
@@ -79,7 +100,10 @@ export const apps: App[] = [
     name: 'Sastodeal',
     description: 'Another great option for online shopping in Nepal.',
     icon: 'https://placehold.co/128x128.png',
-    downloadLink: '#',
+    downloadLinks: {
+      android: '#',
+      windows: '#'
+    },
     category: 'E-commerce',
     tags: ['shopping', 'deals', 'online'],
   },

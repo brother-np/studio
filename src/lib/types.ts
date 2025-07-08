@@ -3,7 +3,10 @@ export type App = {
   name: string;
   description: string;
   icon: string;
-  downloadLink: string;
+  downloadLinks: {
+    android?: string;
+    windows?: string;
+  };
   category: string;
   tags: string[];
 };

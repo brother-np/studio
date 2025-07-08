@@ -5,12 +5,20 @@ import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle }
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
 import { Download } from 'lucide-react';
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuTrigger,
+} from '@/components/ui/dropdown-menu';
 
 interface AppCardProps {
   app: App;
 }
 
 export function AppCard({ app }: AppCardProps) {
+  const hasDownloads = app.downloadLinks.android || app.downloadLinks.windows;
+
   return (
     <Card className="flex flex-col h-full overflow-hidden transition-all hover:shadow-lg hover:-translate-y-1">
       <CardHeader className="flex flex-row items-start gap-4">
@@ -35,12 +43,30 @@ export function AppCard({ app }: AppCardProps) {
         </p>
       </CardContent>
       <CardFooter>
-        <Button asChild className="w-full" variant="default">
-          <Link href={app.downloadLink} target="_blank" rel="noopener noreferrer">
-            <Download className="mr-2 h-4 w-4" />
-            Download
-          </Link>
-        </Button>
+        <DropdownMenu>
+          <DropdownMenuTrigger asChild>
+            <Button className="w-full" variant="default" disabled={!hasDownloads}>
+              <Download className="mr-2 h-4 w-4" />
+              Download
+            </Button>
+          </DropdownMenuTrigger>
+          <DropdownMenuContent className="w-56">
+            {app.downloadLinks.android && (
+              <DropdownMenuItem asChild>
+                <Link href={app.downloadLinks.android} target="_blank" rel="noopener noreferrer" className="w-full">
+                  For Android
+                </Link>
+              </DropdownMenuItem>
+            )}
+            {app.downloadLinks.windows && (
+              <DropdownMenuItem asChild>
+                <Link href={app.downloadLinks.windows} target="_blank" rel="noopener noreferrer" className="w-full">
+                  For Windows
+                </Link>
+              </DropdownMenuItem>
+            )}
+          </DropdownMenuContent>
+        </DropdownMenu>
       </CardFooter>
     </Card>
   );

@@ -33,9 +33,13 @@ const appFormSchema = z.object({
   name: z.string().min(2, { message: 'Name must be at least 2 characters.' }),
   description: z.string().min(10, { message: 'Description must be at least 10 characters.' }),
   icon: z.string().url({ message: 'Please enter a valid icon URL.' }),
-  downloadLink: z.string().url({ message: 'Please enter a valid download link URL.' }),
+  androidDownloadLink: z.string().url({ message: 'Please enter a valid URL.' }).or(z.literal('')).optional(),
+  windowsDownloadLink: z.string().url({ message: 'Please enter a valid URL.' }).or(z.literal('')).optional(),
   category: z.string({ required_error: 'Please select a category.' }),
   tags: z.string().min(1, { message: 'Please enter at least one tag.' }),
+}).refine(data => data.androidDownloadLink || data.windowsDownloadLink, {
+  message: "At least one download link must be provided.",
+  path: ["androidDownloadLink"],
 });
 
 type AppFormValues = z.infer<typeof appFormSchema>;
@@ -58,7 +62,8 @@ export default function AppForm({ app, onSuccess }: AppFormProps) {
       name: app?.name || '',
       description: app?.description || '',
       icon: app?.icon || '',
-      downloadLink: app?.downloadLink || '',
+      androidDownloadLink: app?.downloadLinks?.android || '',
+      windowsDownloadLink: app?.downloadLinks?.windows || '',
       category: app?.category || '',
       tags: app?.tags?.join(', ') || '',
     },
@@ -78,7 +83,8 @@ export default function AppForm({ app, onSuccess }: AppFormProps) {
       name: app?.name || '',
       description: app?.description || '',
       icon: app?.icon || '',
-      downloadLink: app?.downloadLink || '',
+      androidDownloadLink: app?.downloadLinks?.android || '',
+      windowsDownloadLink: app?.downloadLinks?.windows || '',
       category: app?.category || '',
       tags: app?.tags?.join(', ') || '',
     });
@@ -208,19 +214,34 @@ export default function AppForm({ app, onSuccess }: AppFormProps) {
             </FormItem>
           )}
         />
-        <FormField
-          control={form.control}
-          name="downloadLink"
-          render={({ field }) => (
-            <FormItem>
-              <FormLabel>Download Link</FormLabel>
-              <FormControl>
-                <Input placeholder="https://play.google.com/store/apps/details?id=..." {...field} />
-              </FormControl>
-              <FormMessage />
-            </FormItem>
-          )}
-        />
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+          <FormField
+            control={form.control}
+            name="androidDownloadLink"
+            render={({ field }) => (
+              <FormItem>
+                <FormLabel>Android Download Link</FormLabel>
+                <FormControl>
+                  <Input placeholder="https://play.google.com/store/apps/details?id=..." {...field} />
+                </FormControl>
+                <FormMessage />
+              </FormItem>
+            )}
+          />
+          <FormField
+            control={form.control}
+            name="windowsDownloadLink"
+            render={({ field }) => (
+              <FormItem>
+                <FormLabel>Windows Download Link</FormLabel>
+                <FormControl>
+                  <Input placeholder="https://apps.microsoft.com/..." {...field} />
+                </FormControl>
+                <FormMessage />
+              </FormItem>
+            )}
+          />
+        </div>
         <FormField
           control={form.control}
           name="tags"
