@@ -30,7 +30,7 @@ import {
   AlertDialogTrigger,
 } from '@/components/ui/alert-dialog';
 import { Badge } from '@/components/ui/badge';
-import { Edit, PlusCircle, Settings, Trash2 } from 'lucide-react';
+import { Download, Edit, PlusCircle, Settings, Trash2 } from 'lucide-react';
 import AppForm from './app-form';
 import SettingsDialog from './settings-dialog';
 import { deleteApp } from './actions';
@@ -89,6 +89,10 @@ export default function AppTable({ initialApps, initialSettings }: AppTableProps
     <>
       <div className="flex justify-end gap-2 mb-4">
         <SettingsDialog initialSettings={initialSettings} />
+        <Button variant="outline">
+          <Download className="mr-2 h-4 w-4" />
+          Download Source Code
+        </Button>
         <Dialog open={isFormOpen} onOpenChange={setIsFormOpen}>
           <DialogTrigger asChild>
             <Button onClick={openAddForm}>
