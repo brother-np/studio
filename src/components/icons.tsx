@@ -13,13 +13,17 @@ export function NepaliAppHubIcon(props: SVGProps<SVGSVGElement>) {
       <g>
         <rect width="64" height="64" rx="12" fill="hsl(var(--primary))" />
         <path
-          d="M0 64 L0 54 L12 50 L32 32 L52 50 L64 54 L64 64 Z"
+          d="M0 64 L0 42 C 12 36, 24 38, 32 44 C 40 50, 52 50, 64 42 L64 64 Z"
           fill="hsl(var(--accent))"
         />
-        <path d="M12 50 L32 32 L52 50 L32 44 Z" fill="#FFF" />
         <path
-          d="M28 8 L36 8 L36 18 L42 18 L32 26 L22 18 L28 18 Z"
-          fill="#FFF"
+          d="M14 54 L32 22 L50 54 L32 46 Z"
+          fill="#FFFFFF"
+        />
+         <path
+          d="M32 22 L50 54 L32 46 Z"
+          fill="#FFFFFF"
+          fillOpacity="0.7"
         />
       </g>
     </svg>
