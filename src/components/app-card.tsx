@@ -4,7 +4,7 @@ import type { App } from '@/lib/types';
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
-import { Download } from 'lucide-react';
+import { Download, Android, Monitor } from 'lucide-react';
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -46,7 +46,7 @@ export function AppCard({ app }: AppCardProps) {
         <DropdownMenu>
           <DropdownMenuTrigger asChild>
             <Button className="w-full" variant="default" disabled={!hasDownloads}>
-              <Download className="mr-2 h-4 w-4" />
+              <Download />
               Download
             </Button>
           </DropdownMenuTrigger>
@@ -54,6 +54,7 @@ export function AppCard({ app }: AppCardProps) {
             {app.downloadLinks.android && (
               <DropdownMenuItem asChild>
                 <Link href={app.downloadLinks.android} target="_blank" rel="noopener noreferrer" className="w-full">
+                  <Android className="text-green-600" />
                   For Android
                 </Link>
               </DropdownMenuItem>
@@ -61,6 +62,7 @@ export function AppCard({ app }: AppCardProps) {
             {app.downloadLinks.windows && (
               <DropdownMenuItem asChild>
                 <Link href={app.downloadLinks.windows} target="_blank" rel="noopener noreferrer" className="w-full">
+                  <Monitor className="text-blue-600" />
                   For Windows
                 </Link>
               </DropdownMenuItem>
