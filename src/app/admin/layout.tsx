@@ -1,6 +1,8 @@
 import Link from 'next/link';
 import { MeroAppHubIcon } from '@/components/icons';
 import LogoutButton from '@/components/logout-button';
+import { Button } from '@/components/ui/button';
+import { Home } from 'lucide-react';
 
 export default function AdminLayout({
   children,
@@ -20,7 +22,13 @@ export default function AdminLayout({
           </Link>
         </nav>
         <div className="flex w-full items-center gap-4 md:ml-auto md:gap-2 lg:gap-4">
-          <div className="ml-auto">
+          <div className="ml-auto flex items-center gap-2">
+            <Button asChild variant="outline">
+              <Link href="/">
+                <Home />
+                Home
+              </Link>
+            </Button>
             <LogoutButton />
           </div>
         </div>
