@@ -12,14 +12,14 @@ export function NepaliAppHubIcon(props: SVGProps<SVGSVGElement>) {
       <title>Nepali App Hub Icon</title>
       <g>
         <rect width="64" height="64" rx="12" fill="hsl(var(--primary))" />
-        <path d="M0 64 L0 50 L32 30 L64 50 L64 64 Z" fill="hsl(var(--accent))" />
-        <path d="M32 30 L26 39 L38 39 Z" fill="#FFF" />
         <path
-          d="M32 12 V 32 M22 24 L32 32 L42 24"
-          stroke="#FFF"
-          strokeWidth="6"
-          strokeLinecap="round"
-          strokeLinejoin="round"
+          d="M0 64 L0 54 L12 50 L32 32 L52 50 L64 54 L64 64 Z"
+          fill="hsl(var(--accent))"
+        />
+        <path d="M12 50 L32 32 L52 50 L32 44 Z" fill="#FFF" />
+        <path
+          d="M28 8 L36 8 L36 18 L42 18 L32 26 L22 18 L28 18 Z"
+          fill="#FFF"
         />
       </g>
     </svg>
