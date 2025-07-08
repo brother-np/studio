@@ -5,6 +5,7 @@ export const categories = [
   'E-commerce',
   'Utilities',
   'Entertainment',
+  'Games',
   'News',
   'Food & Drink',
 ];
