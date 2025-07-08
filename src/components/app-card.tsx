@@ -4,7 +4,7 @@ import type { App } from '@/lib/types';
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
-import { Download, Android, Monitor } from 'lucide-react';
+import { Download, Smartphone, Monitor } from 'lucide-react';
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -46,24 +46,24 @@ export function AppCard({ app }: AppCardProps) {
         <DropdownMenu>
           <DropdownMenuTrigger asChild>
             <Button className="w-full" variant="default" disabled={!hasDownloads}>
-              <Download />
+              <Download className="mr-2 h-4 w-4" />
               Download
             </Button>
           </DropdownMenuTrigger>
           <DropdownMenuContent className="w-56">
             {app.downloadLinks.android && (
               <DropdownMenuItem asChild>
-                <Link href={app.downloadLinks.android} target="_blank" rel="noopener noreferrer" className="w-full">
-                  <Android className="text-green-600" />
-                  For Android
+                <Link href={app.downloadLinks.android} target="_blank" rel="noopener noreferrer" className="w-full flex items-center gap-2 cursor-pointer">
+                  <Smartphone className="h-4 w-4 text-green-600" />
+                  <span>For Android</span>
                 </Link>
               </DropdownMenuItem>
             )}
             {app.downloadLinks.windows && (
               <DropdownMenuItem asChild>
-                <Link href={app.downloadLinks.windows} target="_blank" rel="noopener noreferrer" className="w-full">
-                  <Monitor className="text-blue-600" />
-                  For Windows
+                <Link href={app.downloadLinks.windows} target="_blank" rel="noopener noreferrer" className="w-full flex items-center gap-2 cursor-pointer">
+                  <Monitor className="h-4 w-4 text-blue-600" />
+                  <span>For Windows</span>
                 </Link>
               </DropdownMenuItem>
             )}
