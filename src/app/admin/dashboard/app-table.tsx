@@ -3,6 +3,7 @@
 
 import { useState } from 'react';
 import type { App } from '@/lib/types';
+import { getApps, deleteApp } from './actions';
 import {
   Table,
   TableBody,
@@ -17,7 +18,7 @@ import {
   DialogContent,
   DialogHeader,
   DialogTitle,
-  DialogTrigger,
+  DialogTrigger
 } from '@/components/ui/dialog';
 import {
   AlertDialog,
@@ -33,9 +34,9 @@ import {
 import { Badge } from '@/components/ui/badge';
 import { Edit, PlusCircle, Trash2 } from 'lucide-react';
 import AppForm from './app-form';
-import { deleteApp } from './actions';
 import { useToast } from '@/hooks/use-toast';
 import Image from 'next/image';
+import { revalidatePath } from 'next/cache';
 
 interface AppTableProps {
   initialApps: App[];
@@ -47,17 +48,15 @@ export default function AppTable({ initialApps }: AppTableProps) {
   const [editingApp, setEditingApp] = useState<App | null>(null);
   const { toast } = useToast();
 
-  const handleFormSuccess = (updatedApp: App) => {
-    if (editingApp) {
-      setApps(apps.map(app => (app.id === updatedApp.id ? updatedApp : app)));
-    } else {
-      setApps([updatedApp, ...apps]);
-    }
-  };
-  
-  const handleFormClose = () => {
+  const refreshApps = async () => {
+    const updatedApps = await getApps();
+    setApps(updatedApps);
+  }
+
+  const handleFormSuccess = () => {
     setIsFormOpen(false);
     setEditingApp(null);
+    refreshApps();
   };
 
   const openEditForm = (app: App) => {
@@ -105,7 +104,6 @@ export default function AppTable({ initialApps }: AppTableProps) {
             <AppForm
               app={editingApp}
               onSuccess={handleFormSuccess}
-              onClose={handleFormClose}
             />
           </DialogContent>
         </Dialog>
