@@ -54,7 +54,7 @@ type AppFormValues = z.infer<typeof appFormSchema>;
 
 interface AppFormProps {
   app?: App | null;
-  onSuccess: () => void;
+  onSuccess: (app: App) => void;
 }
 
 export default function AppForm({ app, onSuccess }: AppFormProps) {
@@ -183,12 +183,12 @@ export default function AppForm({ app, onSuccess }: AppFormProps) {
 
     const result = app?.id ? await updateApp(formData) : await addApp(formData);
     
-    if (result.success) {
+    if (result.success && result.app) {
       toast({
         title: `App ${app?.id ? 'Updated' : 'Added'}`,
         description: `The app "${data.name}" has been successfully ${app?.id ? 'updated' : 'added'}.`,
       });
-      onSuccess();
+      onSuccess(result.app);
     } else {
       toast({
         title: 'An error occurred',

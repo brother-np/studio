@@ -97,7 +97,7 @@ export async function addApp(formData: FormData) {
   apps.unshift(newApp);
   revalidatePath('/admin/dashboard');
   revalidatePath('/');
-  return { success: true };
+  return { success: true, app: newApp };
 }
 
 export async function updateApp(formData: FormData) {
@@ -129,7 +129,7 @@ export async function updateApp(formData: FormData) {
   apps[appIndex] = updatedApp;
   revalidatePath('/admin/dashboard');
   revalidatePath('/');
-  return { success: true };
+  return { success: true, app: updatedApp };
 }
 
 export async function deleteApp(appId: string) {

@@ -1,3 +1,4 @@
+
 'use client';
 
 import { useState } from 'react';
@@ -103,11 +104,7 @@ export default function AppTable({ initialApps, initialSettings }: AppTableProps
             </DialogHeader>
             <AppForm
               app={editingApp}
-              onSuccess={() => {
-                // The revalidation will handle the UI update, just close the modal
-                setIsFormOpen(false);
-                setEditingApp(null);
-              }}
+              onSuccess={handleFormSuccess}
             />
           </DialogContent>
         </Dialog>
