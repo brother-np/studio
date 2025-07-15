@@ -13,13 +13,5 @@ export type App = {
 };
 
 export type AppSettings = {
-  adsensePublisherId: string;
   googleSiteVerification: string;
 };
-
-export type AdUnitProps = {
-    adSlot: string;
-    adClient: string;
-    adFormat?: string;
-    fullWidthResponsive?: boolean;
-}

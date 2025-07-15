@@ -32,12 +32,6 @@ import { useToast } from '@/hooks/use-toast';
 import { Settings } from 'lucide-react';
 
 const settingsFormSchema = z.object({
-  adsensePublisherId: z.string()
-    .refine((val) => val === '' || /^ca-pub-\d{16}$/.test(val), {
-      message: 'Invalid ID. Must be in ca-pub-XXXXXXXXXXXXXXXX format or empty.',
-    })
-    .optional()
-    .default(''),
   googleSiteVerification: z.string().optional().default(''),
 });
 
@@ -55,7 +49,6 @@ export default function SettingsDialog({ initialSettings }: SettingsDialogProps)
   const form = useForm<SettingsFormValues>({
     resolver: zodResolver(settingsFormSchema),
     defaultValues: {
-      adsensePublisherId: initialSettings?.adsensePublisherId || '',
       googleSiteVerification: initialSettings?.googleSiteVerification || '',
     },
   });
@@ -63,7 +56,6 @@ export default function SettingsDialog({ initialSettings }: SettingsDialogProps)
   async function onSubmit(data: SettingsFormValues) {
     setIsSubmitting(true);
     const formData = new FormData();
-    formData.append('adsensePublisherId', data.adsensePublisherId || '');
     formData.append('googleSiteVerification', data.googleSiteVerification || '');
 
     const result = await updateSettings(formData);
@@ -96,27 +88,11 @@ export default function SettingsDialog({ initialSettings }: SettingsDialogProps)
         <DialogHeader>
           <DialogTitle>Google Settings</DialogTitle>
           <DialogDescription>
-            Manage your Google integrations like AdSense and Search Console.
+            Manage your Google integrations like Search Console.
           </DialogDescription>
         </DialogHeader>
         <Form {...form}>
           <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8">
-            <FormField
-              control={form.control}
-              name="adsensePublisherId"
-              render={({ field }) => (
-                <FormItem>
-                  <FormLabel>AdSense Publisher ID</FormLabel>
-                  <FormControl>
-                    <Input placeholder="ca-pub-XXXXXXXXXXXXXXXX" {...field} />
-                  </FormControl>
-                  <FormDescription>
-                    You can find this ID in your AdSense account. Leave blank to disable.
-                  </FormDescription>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
             <FormField
               control={form.control}
               name="googleSiteVerification"

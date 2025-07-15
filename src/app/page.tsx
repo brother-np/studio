@@ -1,30 +1,26 @@
 
 'use server';
 
-import { getApps, getCategories, getSettings } from '@/app/admin/dashboard/actions';
+import { getApps, getCategories } from '@/app/admin/dashboard/actions';
 import { generateWebsiteDescription } from '@/ai/flows/generate-website-description';
 import Header from '@/components/header';
 import AppGrid from '@/components/app-grid';
 import { AppCard } from '@/components/app-card';
-import AdUnit from '@/components/ad-unit';
 
 export default async function Home() {
   // Fetch data in parallel for better performance
   const appsPromise = getApps();
   const categoriesPromise = getCategories();
-  const settingsPromise = getSettings();
   const descriptionPromise = generateWebsiteDescription({});
 
-  const [apps, categories, settings, descriptionResult] = await Promise.all([
+  const [apps, categories, descriptionResult] = await Promise.all([
     appsPromise,
     categoriesPromise,
-    settingsPromise,
     descriptionPromise,
   ]);
   
   const description = descriptionResult.description;
   const featuredApps = apps.slice(0, 3);
-  const adClient = settings.adsensePublisherId;
 
   return (
     <div className="flex min-h-screen w-full flex-col">
@@ -38,13 +34,6 @@ export default async function Home() {
             {description}
           </p>
         </div>
-
-        {adClient && (
-          <AdUnit
-            adSlot="2021831943"
-            adClient={adClient}
-          />
-        )}
 
         <section className="space-y-4">
           <h2 className="text-2xl font-bold font-headline tracking-tight">Featured Apps</h2>

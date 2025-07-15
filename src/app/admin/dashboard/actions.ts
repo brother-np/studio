@@ -32,11 +32,6 @@ const AppSchema = z.object({
 });
 
 const SettingsSchema = z.object({
-  adsensePublisherId: z.string()
-    .refine((val) => val === '' || /^ca-pub-\d{16}$/.test(val), {
-      message: 'Invalid ID. Must be in ca-pub-XXXXXXXXXXXXXXXX format or empty.',
-    })
-    .optional(),
   googleSiteVerification: z.string().optional(),
 });
 
@@ -170,11 +165,10 @@ export async function updateSettings(formData: FormData) {
 
   if (!validatedFields.success) {
     return {
-      error: validatedFields.error.flatten().fieldErrors.adsensePublisherId?.[0] || 'Invalid data.',
+      error: validatedFields.error.flatten().fieldErrors.googleSiteVerification?.[0] || 'Invalid data.',
     };
   }
   
-  settings.adsensePublisherId = validatedFields.data.adsensePublisherId || '';
   settings.googleSiteVerification = validatedFields.data.googleSiteVerification || '';
   
   revalidatePath('/admin/dashboard');
