@@ -113,4 +113,5 @@ export const apps: App[] = [
 // In a real app, this would be in a database.
 export let settings: AppSettings = {
   adsensePublisherId: '',
+  googleSiteVerification: '',
 };

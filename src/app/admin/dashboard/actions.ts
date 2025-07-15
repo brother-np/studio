@@ -37,6 +37,7 @@ const SettingsSchema = z.object({
       message: 'Invalid ID. Must be in ca-pub-XXXXXXXXXXXXXXXX format or empty.',
     })
     .optional(),
+  googleSiteVerification: z.string().optional(),
 });
 
 
@@ -170,6 +171,7 @@ export async function updateSettings(formData: FormData) {
   }
   
   settings.adsensePublisherId = validatedFields.data.adsensePublisherId || '';
+  settings.googleSiteVerification = validatedFields.data.googleSiteVerification || '';
   
   revalidatePath('/admin/dashboard');
   revalidatePath('/');

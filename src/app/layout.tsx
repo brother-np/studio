@@ -15,7 +15,7 @@ export default async function RootLayout({
 }: Readonly<{
   children: React.ReactNode;
 }>) {
-  const adsensePublisherId = settings.adsensePublisherId;
+  const { adsensePublisherId, googleSiteVerification } = settings;
 
   return (
     <html lang="en" suppressHydrationWarning>
@@ -31,6 +31,9 @@ export default async function RootLayout({
             crossOrigin="anonymous"
             strategy="afterInteractive"
           />
+        )}
+        {googleSiteVerification && (
+          <meta name="google-site-verification" content={googleSiteVerification} />
         )}
       </head>
       <body className={cn("font-body antialiased", "min-h-screen bg-background font-sans")}>

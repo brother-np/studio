@@ -13,4 +13,5 @@ export type App = {
 
 export type AppSettings = {
   adsensePublisherId: string;
+  googleSiteVerification: string;
 };

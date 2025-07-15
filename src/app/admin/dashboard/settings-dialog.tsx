@@ -38,6 +38,7 @@ const settingsFormSchema = z.object({
     })
     .optional()
     .default(''),
+  googleSiteVerification: z.string().optional().default(''),
 });
 
 type SettingsFormValues = z.infer<typeof settingsFormSchema>;
@@ -55,24 +56,22 @@ export default function SettingsDialog({ initialSettings }: SettingsDialogProps)
     resolver: zodResolver(settingsFormSchema),
     defaultValues: {
       adsensePublisherId: initialSettings?.adsensePublisherId || '',
+      googleSiteVerification: initialSettings?.googleSiteVerification || '',
     },
   });
 
   async function onSubmit(data: SettingsFormValues) {
     setIsSubmitting(true);
     const formData = new FormData();
-    if (data.adsensePublisherId) {
-        formData.append('adsensePublisherId', data.adsensePublisherId);
-    } else {
-        formData.append('adsensePublisherId', '');
-    }
+    formData.append('adsensePublisherId', data.adsensePublisherId || '');
+    formData.append('googleSiteVerification', data.googleSiteVerification || '');
 
     const result = await updateSettings(formData);
 
     if (result.success) {
       toast({
         title: 'Settings Updated',
-        description: 'Your AdSense settings have been saved.',
+        description: 'Your Google settings have been saved.',
       });
       setIsOpen(false);
     } else {
@@ -90,14 +89,14 @@ export default function SettingsDialog({ initialSettings }: SettingsDialogProps)
       <DialogTrigger asChild>
         <Button variant="outline">
           <Settings className="mr-2 h-4 w-4" />
-          AdSense Settings
+          Google Settings
         </Button>
       </DialogTrigger>
       <DialogContent className="sm:max-w-[425px]">
         <DialogHeader>
-          <DialogTitle>Google AdSense</DialogTitle>
+          <DialogTitle>Google Settings</DialogTitle>
           <DialogDescription>
-            Enter your AdSense Publisher ID to enable ads on the site. Leave blank to disable.
+            Manage your Google integrations like AdSense and Search Console.
           </DialogDescription>
         </DialogHeader>
         <Form {...form}>
@@ -107,12 +106,28 @@ export default function SettingsDialog({ initialSettings }: SettingsDialogProps)
               name="adsensePublisherId"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel>Publisher ID</FormLabel>
+                  <FormLabel>AdSense Publisher ID</FormLabel>
                   <FormControl>
                     <Input placeholder="ca-pub-XXXXXXXXXXXXXXXX" {...field} />
                   </FormControl>
                   <FormDescription>
-                    You can find this ID in your AdSense account.
+                    You can find this ID in your AdSense account. Leave blank to disable.
+                  </FormDescription>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+            <FormField
+              control={form.control}
+              name="googleSiteVerification"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>Google Site Verification</FormLabel>
+                  <FormControl>
+                    <Input placeholder="Your verification code" {...field} />
+                  </FormControl>
+                  <FormDescription>
+                    Paste the content from the HTML tag verification method in Google Search Console.
                   </FormDescription>
                   <FormMessage />
                 </FormItem>
