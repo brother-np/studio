@@ -6,7 +6,7 @@ import { useForm, Controller } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import * as z from 'zod';
 import type { App } from '@/lib/types';
-import { addApp, updateApp, suggestTagsAction, getCategories } from './actions';
+import { addApp, updateApp, suggestTagsAction, getCategories, generateDescriptionAction } from './actions';
 import { Button } from '@/components/ui/button';
 import {
   Form,
@@ -61,6 +61,7 @@ export default function AppForm({ app, onSuccess, onClose }: AppFormProps) {
   const { toast } = useToast();
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [isSuggesting, setIsSuggesting] = useState(false);
+  const [isGenerating, setIsGenerating] = useState(false);
   const [categories, setCategories] = useState<string[]>([]);
   const [iconPreview, setIconPreview] = useState<string | null>(app?.icon || null);
   const fileInputRef = useRef<HTMLInputElement>(null);
@@ -154,6 +155,43 @@ export default function AppForm({ app, onSuccess, onClose }: AppFormProps) {
       });
     }
     setIsSuggesting(false);
+  };
+  
+  const handleGenerateDescription = async () => {
+    const name = form.getValues('name');
+    if (!name) {
+      toast({
+        title: 'Cannot Generate Description',
+        description: 'Please enter an app name first.',
+        variant: 'destructive'
+      });
+      return;
+    }
+
+    setIsGenerating(true);
+    try {
+      const result = await generateDescriptionAction(name);
+      if(result.description) {
+        form.setValue('description', result.description);
+        toast({
+          title: 'Description Generated!',
+          description: 'AI has generated a description for your app.',
+        });
+      } else if (result.error) {
+        toast({
+          title: 'Error Generating Description',
+          description: result.error,
+          variant: 'destructive',
+        });
+      }
+    } catch (e) {
+       toast({
+        title: 'Error',
+        description: 'An unexpected error occurred.',
+        variant: 'destructive',
+      });
+    }
+    setIsGenerating(false);
   };
 
   const fileToDataUrl = (file: File): Promise<string> => {
@@ -258,7 +296,13 @@ export default function AppForm({ app, onSuccess, onClose }: AppFormProps) {
           name="description"
           render={({ field }) => (
             <FormItem>
-              <FormLabel>Description</FormLabel>
+              <div className="flex items-center justify-between">
+                <FormLabel>Description</FormLabel>
+                 <Button type="button" variant="outline" size="sm" onClick={handleGenerateDescription} disabled={isGenerating}>
+                  <Wand2 className="mr-2 h-4 w-4" />
+                  {isGenerating ? 'Generating...' : 'AI Generate'}
+                </Button>
+              </div>
               <FormControl>
                 <Textarea
                   placeholder="Describe the app's features and purpose."
