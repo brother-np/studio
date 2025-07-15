@@ -112,6 +112,6 @@ export const apps: App[] = [
 // In-memory store for site settings.
 // In a real app, this would be in a database.
 export let settings: AppSettings = {
-  adsensePublisherId: '',
+  adsensePublisherId: 'ca-pub-6397078573075187',
   googleSiteVerification: '',
 };
