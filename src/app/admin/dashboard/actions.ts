@@ -10,7 +10,6 @@ import { revalidatePath } from 'next/cache';
 import { apps as appData, categories, settings } from '@/lib/data';
 import type { App, AppSettings } from '@/lib/types';
 import { suggestAppTags } from '@/ai/flows/suggest-app-tags';
-import { generateAppDescription } from '@/ai/flows/generate-app-description';
 
 let apps: App[] = [...appData]; // mutable copy
 
@@ -150,19 +149,6 @@ export async function suggestTagsAction(description: string) {
     return { tags: result.tags };
   } catch (error) {
     console.error('AI Tag Suggestion Error:', error);
-    return { error: 'The AI service is currently unavailable. Please try again later.' };
-  }
-}
-
-export async function generateDescriptionAction(name: string) {
-  if (!name) {
-    return { error: 'App name cannot be empty.' };
-  }
-  try {
-    const result = await generateAppDescription({ name });
-    return { description: result.description };
-  } catch (error) {
-    console.error('AI Description Generation Error:', error);
     return { error: 'The AI service is currently unavailable. Please try again later.' };
   }
 }
