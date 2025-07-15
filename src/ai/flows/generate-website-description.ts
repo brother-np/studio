@@ -1,3 +1,4 @@
+
 'use server';
 
 /**
@@ -72,7 +73,7 @@ Here is a complete breakdown of the application:
   - A clean form with fields for: App Name, Description, Icon URL, Android Download Link, Windows Download Link, Category (a dropdown), and Tags (a comma-separated text field).
   - **AI Tag Suggestion:** Next to the "Tags" field, there is a button with a magic wand icon labeled "Suggest with AI". When clicked, it reads the app's description, calls a Genkit AI flow, and automatically populates the tags field with relevant keywords.
 - **Delete Confirmation:** Clicking the delete button on an app opens an alert dialog asking for confirmation to prevent accidental deletion.
-- **AdSense Settings (Dialog):** The settings dialog allows the admin to enter a Google AdSense Publisher ID to enable ads on the website.
+- **Google Settings (Dialog):** The settings dialog allows the admin to enter a Google Site Verification code.
 
 **Your Task:**
 Based on this exhaustive description, generate a single, engaging, and concise paragraph (2-3 sentences) for the main welcome section of the NepaliAppHub homepage. The tone should be professional, welcoming, and highlight the value of discovering community-focused apps.
@@ -88,10 +89,13 @@ const generateWebsiteDescriptionFlow = ai.defineFlow(
   async (input) => {
     try {
       const {output} = await prompt(input);
-      return output!;
+      if (!output) {
+        throw new Error('AI returned no output.');
+      }
+      return output;
     } catch (error) {
       console.error('AI Description Generation Error:', error);
-      // Return a fallback description if the AI fails
+      // Return a fallback description if the AI fails for any reason
       return { description: 'Explore a curated collection of apps made for Nepal and by Nepalis. Find tools, games, and services from your community.' };
     }
   }
