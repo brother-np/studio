@@ -77,8 +77,10 @@ export async function addApp(formData: FormData) {
   const validatedFields = AppSchema.safeParse(Object.fromEntries(formData.entries()));
 
   if (!validatedFields.success) {
+    const errorMessages = validatedFields.error.flatten().fieldErrors;
+    const firstError = Object.values(errorMessages)[0]?.[0]
     return {
-      error: 'Invalid fields. ' + validatedFields.error.flatten().fieldErrors,
+      error: `Invalid fields. ${firstError || 'Please check your input.'}`,
     };
   }
   
@@ -104,8 +106,10 @@ export async function updateApp(formData: FormData) {
   const validatedFields = AppSchema.safeParse(Object.fromEntries(formData.entries()));
 
   if (!validatedFields.success || !validatedFields.data.id) {
+    const errorMessages = validatedFields.error.flatten().fieldErrors;
+    const firstError = Object.values(errorMessages)[0]?.[0]
     return {
-      error: 'Invalid fields or missing ID.',
+      error: `Invalid fields. ${firstError || 'Please check your input.'}`,
     };
   }
 
@@ -150,7 +154,7 @@ export async function suggestTagsAction(description: string) {
     return { tags: result.tags };
   } catch (error) {
     console.error('AI Tag Suggestion Error:', error);
-    return { error: 'Failed to suggest tags.' };
+    return { error: 'The AI service is currently unavailable. Please try again later.' };
   }
 }
 

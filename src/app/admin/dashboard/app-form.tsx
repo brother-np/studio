@@ -38,7 +38,6 @@ const appFormSchema = z.object({
   name: z.string().min(2, { message: 'Name must be at least 2 characters.' }),
   description: z.string().min(10, { message: 'Description must be at least 10 characters.' }),
   icon: z.any().refine((value) => {
-    // For existing apps, the icon is a URL string. For new/updated ones, it can be a FileList.
     return (typeof value === 'string' && value !== '') || (value instanceof FileList && value.length > 0)
   }, 'An app icon is required.'),
   androidDownloadLink: z.string().url({ message: 'Please enter a valid URL.' }).or(z.literal('')).optional(),
@@ -55,9 +54,10 @@ type AppFormValues = z.infer<typeof appFormSchema>;
 interface AppFormProps {
   app?: App | null;
   onSuccess: (app: App) => void;
+  onClose: () => void;
 }
 
-export default function AppForm({ app, onSuccess }: AppFormProps) {
+export default function AppForm({ app, onSuccess, onClose }: AppFormProps) {
   const { toast } = useToast();
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [isSuggesting, setIsSuggesting] = useState(false);
@@ -131,17 +131,25 @@ export default function AppForm({ app, onSuccess }: AppFormProps) {
     }
 
     setIsSuggesting(true);
-    const result = await suggestTagsAction(description);
-    if(result.tags) {
-      form.setValue('tags', result.tags.join(', '));
-      toast({
-        title: 'Tags Suggested!',
-        description: 'AI has suggested some tags based on your description.',
-      });
-    } else {
-      toast({
+    try {
+      const result = await suggestTagsAction(description);
+      if(result.tags) {
+        form.setValue('tags', result.tags.join(', '));
+        toast({
+          title: 'Tags Suggested!',
+          description: 'AI has suggested some tags based on your description.',
+        });
+      } else if (result.error) {
+        toast({
+          title: 'Error Suggesting Tags',
+          description: result.error,
+          variant: 'destructive',
+        });
+      }
+    } catch (e) {
+       toast({
         title: 'Error',
-        description: result.error,
+        description: 'An unexpected error occurred.',
         variant: 'destructive',
       });
     }
@@ -172,7 +180,6 @@ export default function AppForm({ app, onSuccess }: AppFormProps) {
       }
     }
     
-    // Use Object.entries on the original data object, but replace icon value.
     const submissionData = {...data, icon: iconData };
 
     Object.entries(submissionData).forEach(([key, value]) => {
@@ -189,6 +196,7 @@ export default function AppForm({ app, onSuccess }: AppFormProps) {
         description: `The app "${data.name}" has been successfully ${app?.id ? 'updated' : 'added'}.`,
       });
       onSuccess(result.app);
+      onClose();
     } else {
       toast({
         title: 'An error occurred',
