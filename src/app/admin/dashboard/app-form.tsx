@@ -1,7 +1,8 @@
+
 'use client';
 
-import { useEffect, useState } from 'react';
-import { useForm } from 'react-hook-form';
+import { useEffect, useState, useRef } from 'react';
+import { useForm, Controller } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import * as z from 'zod';
 import type { App } from '@/lib/types';
@@ -26,13 +27,20 @@ import {
   SelectValue,
 } from '@/components/ui/select';
 import { useToast } from '@/hooks/use-toast';
-import { Wand2 } from 'lucide-react';
+import { Wand2, Upload, X } from 'lucide-react';
+import Image from 'next/image';
+
+const MAX_FILE_SIZE = 500000; // 500KB
+const ACCEPTED_IMAGE_TYPES = ["image/jpeg", "image/jpg", "image/png", "image/webp"];
 
 const appFormSchema = z.object({
   id: z.string().optional(),
   name: z.string().min(2, { message: 'Name must be at least 2 characters.' }),
   description: z.string().min(10, { message: 'Description must be at least 10 characters.' }),
-  icon: z.string().url({ message: 'Please enter a valid icon URL.' }),
+  icon: z.any().refine((value) => {
+    // For existing apps, the icon is a URL string. For new/updated ones, it can be a FileList.
+    return (typeof value === 'string' && value !== '') || (value instanceof FileList && value.length > 0)
+  }, 'An app icon is required.'),
   androidDownloadLink: z.string().url({ message: 'Please enter a valid URL.' }).or(z.literal('')).optional(),
   windowsDownloadLink: z.string().url({ message: 'Please enter a valid URL.' }).or(z.literal('')).optional(),
   category: z.string({ required_error: 'Please select a category.' }),
@@ -54,6 +62,8 @@ export default function AppForm({ app, onSuccess }: AppFormProps) {
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [isSuggesting, setIsSuggesting] = useState(false);
   const [categories, setCategories] = useState<string[]>([]);
+  const [iconPreview, setIconPreview] = useState<string | null>(app?.icon || null);
+  const fileInputRef = useRef<HTMLInputElement>(null);
   
   const form = useForm<AppFormValues>({
     resolver: zodResolver(appFormSchema),
@@ -68,6 +78,23 @@ export default function AppForm({ app, onSuccess }: AppFormProps) {
       tags: app?.tags?.join(', ') || '',
     },
   });
+  
+  const iconValue = form.watch('icon');
+
+  useEffect(() => {
+    if (iconValue instanceof FileList && iconValue.length > 0) {
+      const file = iconValue[0];
+      const reader = new FileReader();
+      reader.onloadend = () => {
+        setIconPreview(reader.result as string);
+      };
+      reader.readAsDataURL(file);
+    } else if (typeof iconValue === 'string') {
+      setIconPreview(iconValue);
+    } else {
+      setIconPreview(null);
+    }
+  }, [iconValue]);
 
   useEffect(() => {
     async function fetchCategories() {
@@ -78,16 +105,18 @@ export default function AppForm({ app, onSuccess }: AppFormProps) {
   }, []);
 
   useEffect(() => {
+    const defaultIcon = app?.icon || '';
     form.reset({
       id: app?.id || '',
       name: app?.name || '',
       description: app?.description || '',
-      icon: app?.icon || '',
+      icon: defaultIcon,
       androidDownloadLink: app?.downloadLinks?.android || '',
       windowsDownloadLink: app?.downloadLinks?.windows || '',
       category: app?.category || '',
       tags: app?.tags?.join(', ') || '',
     });
+    setIconPreview(defaultIcon);
   }, [app, form]);
   
   const handleSuggestTags = async () => {
@@ -119,12 +148,36 @@ export default function AppForm({ app, onSuccess }: AppFormProps) {
     setIsSuggesting(false);
   };
 
+  const fileToDataUrl = (file: File): Promise<string> => {
+    return new Promise((resolve, reject) => {
+      const reader = new FileReader();
+      reader.onload = () => resolve(reader.result as string);
+      reader.onerror = reject;
+      reader.readAsDataURL(file);
+    });
+  }
+
   async function onSubmit(data: AppFormValues) {
     setIsSubmitting(true);
     const formData = new FormData();
-    Object.entries(data).forEach(([key, value]) => {
+
+    let iconData = data.icon;
+    if (data.icon instanceof FileList && data.icon.length > 0) {
+      try {
+        iconData = await fileToDataUrl(data.icon[0]);
+      } catch (error) {
+        toast({ title: 'Error processing image', variant: 'destructive' });
+        setIsSubmitting(false);
+        return;
+      }
+    }
+    
+    // Use Object.entries on the original data object, but replace icon value.
+    const submissionData = {...data, icon: iconData };
+
+    Object.entries(submissionData).forEach(([key, value]) => {
       if (value) {
-        formData.append(key, value);
+        formData.append(key, value as string);
       }
     });
 
@@ -144,6 +197,14 @@ export default function AppForm({ app, onSuccess }: AppFormProps) {
       });
     }
     setIsSubmitting(false);
+  }
+
+  const handleRemoveImage = () => {
+    form.setValue('icon', '');
+    setIconPreview(null);
+    if (fileInputRef.current) {
+        fileInputRef.current.value = '';
+    }
   }
 
   return (
@@ -204,12 +265,35 @@ export default function AppForm({ app, onSuccess }: AppFormProps) {
         <FormField
           control={form.control}
           name="icon"
-          render={({ field }) => (
+          render={({ field: { onChange, value, ...rest }}) => (
             <FormItem>
-              <FormLabel>Icon URL</FormLabel>
-              <FormControl>
-                <Input placeholder="https://example.com/icon.png" {...field} />
-              </FormControl>
+              <FormLabel>App Icon</FormLabel>
+              <div className="flex items-center gap-4">
+                <div className="w-20 h-20 rounded-lg border border-dashed flex items-center justify-center bg-muted/50">
+                  {iconPreview ? (
+                     <div className="relative w-full h-full">
+                        <Image src={iconPreview} alt="Icon preview" layout="fill" objectFit="contain" className="rounded-lg" />
+                         <Button type="button" variant="destructive" size="icon" className="absolute -top-2 -right-2 h-6 w-6 rounded-full" onClick={handleRemoveImage}>
+                           <X className="h-4 w-4" />
+                         </Button>
+                      </div>
+                  ) : (
+                    <Upload className="h-8 w-8 text-muted-foreground" />
+                  )}
+                </div>
+                <div className="flex-1">
+                   <FormControl>
+                      <Input 
+                        type="file" 
+                        accept="image/*"
+                        {...rest}
+                        ref={fileInputRef}
+                        onChange={(e) => onChange(e.target.files)}
+                      />
+                  </FormControl>
+                  <FormDescription>Upload a PNG, JPG, or WEBP file (max 500KB).</FormDescription>
+                </div>
+              </div>
               <FormMessage />
             </FormItem>
           )}

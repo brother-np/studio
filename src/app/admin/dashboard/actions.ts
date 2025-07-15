@@ -1,3 +1,4 @@
+
 'use server';
 
 import { z } from 'zod';
@@ -20,7 +21,7 @@ const AppSchema = z.object({
   id: z.string().optional(),
   name: z.string().min(1, 'Name is required'),
   description: z.string().min(1, 'Description is required'),
-  icon: z.string().url('Must be a valid URL'),
+  icon: z.string().min(1, 'Icon is required'),
   androidDownloadLink: z.string().url('Must be a valid URL or empty.').optional().or(z.literal('')),
   windowsDownloadLink: z.string().url('Must be a valid URL or empty.').optional().or(z.literal('')),
   category: z.string().min(1, 'Category is required'),
