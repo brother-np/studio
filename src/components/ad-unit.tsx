@@ -1,7 +1,7 @@
 
 'use client';
 
-import { useEffect, useRef } from 'react';
+import { useEffect } from 'react';
 import type { AdUnitProps } from '@/lib/types';
 import { Card } from './ui/card';
 
@@ -13,12 +13,7 @@ declare global {
 }
 
 const AdUnit = ({ adSlot, adClient, adFormat = "auto", fullWidthResponsive = true }: AdUnitProps) => {
-    const adRef = useRef<HTMLDivElement>(null);
     useEffect(() => {
-        if (adRef.current && adRef.current.offsetWidth === 0) {
-            console.warn('Ad container has no width, ad will not be displayed.');
-            return;
-        }
         try {
             (window.adsbygoogle = window.adsbygoogle || []).push({});
         } catch (err) {
@@ -31,10 +26,10 @@ const AdUnit = ({ adSlot, adClient, adFormat = "auto", fullWidthResponsive = tru
     }
 
     return (
-        <Card ref={adRef} className="flex justify-center items-center p-4 my-4 min-h-[100px] bg-muted/50 w-full">
+        <Card className="flex justify-center items-center p-4 my-4 min-h-[100px] bg-muted/50 w-full overflow-hidden">
              <ins
                 className="adsbygoogle"
-                style={{ display: 'block', width: '100%' }}
+                style={{ display: 'block' }}
                 data-ad-client={adClient}
                 data-ad-slot={adSlot}
                 data-ad-format={adFormat}
