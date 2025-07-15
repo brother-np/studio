@@ -13,11 +13,7 @@ export default async function Home() {
   const appsPromise = getApps();
   const categoriesPromise = getCategories();
   const settingsPromise = getSettings();
-  const descriptionPromise = generateWebsiteDescription({}).catch(err => {
-    console.error("Failed to generate website description:", err);
-    // Provide a fallback description
-    return { description: 'Explore a curated collection of apps made for Nepal and by Nepalis.' };
-  });
+  const descriptionPromise = generateWebsiteDescription({});
 
   const [apps, categories, settings, descriptionResult] = await Promise.all([
     appsPromise,

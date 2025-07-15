@@ -86,7 +86,13 @@ const generateWebsiteDescriptionFlow = ai.defineFlow(
     outputSchema: GenerateWebsiteDescriptionOutputSchema,
   },
   async (input) => {
-    const {output} = await prompt(input);
-    return output!;
+    try {
+      const {output} = await prompt(input);
+      return output!;
+    } catch (error) {
+      console.error('AI Description Generation Error:', error);
+      // Return a fallback description if the AI fails
+      return { description: 'Explore a curated collection of apps made for Nepal and by Nepalis. Find tools, games, and services from your community.' };
+    }
   }
 );

@@ -46,7 +46,13 @@ const suggestAppTagsFlow = ai.defineFlow(
     outputSchema: SuggestAppTagsOutputSchema,
   },
   async input => {
-    const {output} = await prompt(input);
-    return output!;
+    try {
+      const {output} = await prompt(input);
+      return output!;
+    } catch (error) {
+      console.error('AI Tag Suggestion Error:', error);
+      // Return an empty array if the AI fails to prevent crashes
+      return { tags: [] };
+    }
   }
 );
